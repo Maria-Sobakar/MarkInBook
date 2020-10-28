@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MarkInBook</string>
+    <string name="sing_in">Вхід</string>
+    <string name="sing_up">Реєстрація</string>
+    <string name="email">Електронна пошта:</string>
+    <string name="password">Пароль:</string>
+    <string name="role">Посада</string>
+    <string name="student">Студент</string>
 </resources>
