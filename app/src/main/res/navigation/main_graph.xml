@@ -3,10 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/authenticationFragment">
+    app:startDestination="@id/scheduleFragment">
     <fragment
-        android:id="@+id/authenticationFragment"
+        android:id="@+id/authorizationFragment"
         android:name="com.fuh.markinbook.screens.authentication.AuthFragment"
         android:label="AuthenticationFragment"
         tools:layout="@layout/auth_fragment" />
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.fuh.markinbook.screens.schedule.ScheduleFragment"
+        android:label="ScheduleFragment" />
+    <fragment
+        android:id="@+id/lessonFragment"
+        android:name="com.fuh.markinbook.screens.newlesson.LessonFragment"
+        android:label="LessonFragment" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.fuh.markinbook.screens.userscreen.UserFragment"
+        android:label="UserFragment" />
+    <fragment
+        android:id="@+id/markStatisticsFragment"
+        android:name="com.fuh.markinbook.screens.userscreen.markstat.MarkStatisticsFragment"
+        android:label="MarkStatisticsFragment" />
+    <fragment
+        android:id="@+id/tasksFragment"
+        android:name="com.fuh.markinbook.screens.userscreen.tasklist.TasksFragment"
+        android:label="TasksFragment" />
+    <fragment
+        android:id="@+id/homeworkFragment"
+        android:name="com.fuh.markinbook.screens.schedule.homework.HomeworkFragment"
+        android:label="HomeworkFragment" />
 </navigation>

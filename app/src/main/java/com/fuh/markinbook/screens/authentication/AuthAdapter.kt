@@ -2,8 +2,8 @@ package com.fuh.markinbook.screens.authentication
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.fuh.markinbook.screens.authentication.sindUp.SingUpFragment
-import com.fuh.markinbook.screens.authentication.singIn.SingInFragment
+import com.fuh.markinbook.screens.authentication.signup.SignUpFragment
+import com.fuh.markinbook.screens.authentication.singin.SignInFragment
 
 class AuthAdapter(fragment:Fragment):FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
@@ -12,9 +12,9 @@ class AuthAdapter(fragment:Fragment):FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
         return if (position == 0) {
-            SingInFragment.getInstance()
+            SignInFragment.getInstance()
         } else {
-            SingUpFragment.getInstance()
+            SignUpFragment.getInstance()
         }
     }
 }
