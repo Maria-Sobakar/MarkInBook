@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lessonCoordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple_0">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lessonConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/lessonToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/purple_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/add_new_lesson" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lessonNameTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/lesson_name"
+            app:boxBackgroundColor="@color/purple_0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lessonToolBar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lessonNameTextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/datePickerButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_0"
+            android:padding="4dp"
+            android:text="@string/lesson_start_date"
+            app:icon="@drawable/ic_add"
+            app:iconGravity="end"
+            app:layout_constraintTop_toBottomOf="@id/lessonNameTextInputLayout" />
+
+        <Button
+            android:id="@+id/timePickerButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/purple_0"
+            android:padding="4dp"
+            android:text="@string/lesson_start_time"
+            app:icon="@drawable/ic_add"
+            app:iconGravity="end"
+            app:layout_constraintTop_toBottomOf="@id/datePickerButton" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lessonDurationTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/lesson_duration"
+            app:boxBackgroundColor="@color/purple_0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timePickerButton">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lessonDurationTextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/lesson_homework"
+            app:boxBackgroundColor="@color/purple_0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lessonDurationTextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lessonHomeworkTextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/createNewLessonFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_check" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,3 +1,69 @@
 <resources>
     <string name="app_name">MarkInBook</string>
+    <string name="sign_in">Вхід</string>
+    <string name="without_sign_in">Продовжити без входу</string>
+    <string name="sig_up">Реєстрація</string>
+    <string name="authorization">Ввійдіть у систему</string>
+    <string name="log_in">Ввійти у систему</string>
+    <string name="email">Електронна пошта</string>
+    <string name="password">Пароль</string>
+    <string name="firstName">Им\'я</string>
+    <string name="lastName">Прізвище</string>
+    <string name="school">Школа</string>
+    <string name="group">Клас</string>
+
+    <string name="server_error">Помилка на сервері</string>
+    <string name="no_network_connection">Відсутнє інтернет з\'єднання, доступні лише локальні уроки</string>
+    <string name="not_all_fields_filled">Заповніть, будь ласка, всі поля!</string>
+    <string name="invalid_email">Некоректна електронна адреса!</string>
+    <string name="invalid_duration">Некоректне значення!</string>
+    <string name="can_not_load_profile">Неможливо завантажити дані профілю через відсутність інтернет з\'єднання.</string>
+
+
+    <string name="lesson_name">Назва предмету</string>
+    <string name="lesson_start_date">Виберіть дату заняття</string>
+    <string name="lesson_start_time">Виберіть час початку заняття</string>
+    <string name="lesson_duration">Тривалість заняття, хв</string>
+    <string name="add_new_lesson">Додайте нове заняття</string>
+    <string name="lesson_homework">Домашнє завдання</string>
+    <string name="not_all_info">Заповніть основні поля</string>
+    <string name="mark">Оцінка:</string>
+
+    <string name="schedule_current_week">Розклад на поточний тиждень</string>
+    <string name="current_week">Поточний тиждень</string>
+    <string name="schedule_prev_week">Розклад на минулий тиждень</string>
+    <string name="prev_week">Минулий тиждень</string>
+    <string name="schedule_next_week">Розклад на наступний тиждень</string>
+    <string name="next_week">Наступний тиждень</string>
+    <string name="schedule">Розклад</string>
+
+    <string name="discipline_list">Список дисциплін</string>
+    <string name="task_list">Список завдань</string>
+    <string name="mark_statistics">Статистика оцінок</string>
+    <string name="change_photo">Змінити фото</string>
+    <string name="user_information">Дані студента</string>
+    <string name="average_mark">Середня оцінка</string>
+    <string name="tasks_done">Виконані</string>
+    <string name="tasks_not_done">Невиконані</string>
+
+    <string name="monday">Понедіок</string>
+    <string name="tuesday">Вівторок</string>
+    <string name="wednesday">Середа</string>
+    <string name="thursday">Четвер</string>
+    <string name="friday">П\'ятниця</string>
+    <string name="saturday">Субота</string>
+    <string name="sunday">Неділя</string>
+
+
+    <string name="profile">Ваш профіль</string>
+    <string name="choose_app">Оберіть додаток</string>
+    <string name="gallery">Галерея</string>
+    <string name="camera">Камера</string>
+    <string name="storage_permission_needed">Для встановлення зображення необхідний доступ до файлів</string>
+
+    <string name="notification">Сповіщення застосунку</string>
+    <string name="notification_description">Сповіщення про додавання домашнього завдання або оцінок</string>
+    <string name="homework_added">Додано домашнє завдання!</string>
+    <string name="homework_mark">Додана оцінка за виконання доманього завдання!</string>
+    <string name="lesson_mark">Додана оцінка за заняття!</string>
 </resources>
