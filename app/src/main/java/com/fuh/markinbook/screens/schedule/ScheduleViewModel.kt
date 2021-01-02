@@ -80,6 +80,7 @@ class ScheduleViewModel : ViewModel() {
             val currentYear = today.get(Calendar.YEAR)
             when (val response = serverRepository.getLessonsForWeek(currentWeek, currentYear)) {
                 is ResultWrapper.Success -> {
+
                     val localLessons = databaseRepository.getLessons()
                     val currentWeekLessons = localLessons.filter { it.isThisWeek(currentWeek) }
                     if (PreferencesManager.userToken.isNotEmpty()) {
@@ -114,7 +115,6 @@ class ScheduleViewModel : ViewModel() {
                     }
                 }
                 is ResultWrapper.NetworkError -> {
-                    PreferencesManager.userToken = ""
                     getLocalLessons(currentWeek)
                     networkErrorLiveData.value = Event(true)
 

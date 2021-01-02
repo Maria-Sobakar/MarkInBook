@@ -59,9 +59,11 @@ class LessonFragment : Fragment(R.layout.lesson_fragment) {
         }
         lessonDurationTextInputEditText.doOnTextChanged { text, _, _, _ ->
             val duration = text.toString().toIntOrNull()
-            if (duration == null) {
-                lessonDurationTextInputLayout.error =
-                    requireContext().getText(R.string.invalid_duration)
+            if (duration == null ) {
+                if (text.toString().isNotEmpty()){
+                    lessonDurationTextInputLayout.error =
+                        requireContext().getText(R.string.invalid_duration)
+                }
             } else {
                 lessonDurationTextInputLayout.error = null
                 viewModel.durationIsSet(duration)

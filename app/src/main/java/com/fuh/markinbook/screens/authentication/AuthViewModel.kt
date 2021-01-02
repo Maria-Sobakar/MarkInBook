@@ -25,9 +25,12 @@ class AuthViewModel : ViewModel() {
     val openScheduleFragmentLiveData = MutableLiveData<Event<Boolean>>()
     val schoolsLiveData = MutableLiveData<List<School>>()
     val groupsLiveData = MutableLiveData<List<Group>>()
-    val networkErrorLiveData = MutableLiveData<Event<Boolean>>()
-    val serverErrorLiveData = MutableLiveData<Event<Boolean>>()
-    val notFilledFieldsLiveData = MutableLiveData<Event<Boolean>>()
+    val signUpNetworkErrorLiveData = MutableLiveData<Event<Boolean>>()
+    val signUpServerErrorLiveData = MutableLiveData<Event<Boolean>>()
+    val signInNetworkErrorLiveData = MutableLiveData<Event<Boolean>>()
+    val signInServerErrorLiveData = MutableLiveData<Event<Boolean>>()
+    val signUpNotFilledFieldsLiveData = MutableLiveData<Event<Boolean>>()
+    val signInNotFilledFieldsLiveData = MutableLiveData<Event<Boolean>>()
 
     init {
         getSchools()
@@ -62,20 +65,28 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             when (val schools = repository.getAllSchools()) {
                 is ResultWrapper.NetworkError -> {
-                    networkErrorLiveData.value = Event(true)
+                    signUpNetworkErrorLiveData.value = Event(true)
                 }
                 is ResultWrapper.Success -> {
                     schoolsLiveData.value = schools.value!!
                 }
-                is ResultWrapper.GenericError -> serverErrorLiveData.value = Event(true)
+                is ResultWrapper.GenericError ->signUpServerErrorLiveData.value = Event(true)
             }
         }
     }
 
     private fun getGroupsForSchool() {
         viewModelScope.launch {
-            val groups = repository.getGroups(school?.id ?: 0)
-            groupsLiveData.value = groups
+            val schoolId = school?.id?:0
+            when (val groups = repository.getGroups(schoolId)) {
+                is ResultWrapper.NetworkError -> {
+                    signUpNetworkErrorLiveData.value = Event(true)
+                }
+                is ResultWrapper.Success -> {
+                    groupsLiveData.value = groups.value
+                }
+                is ResultWrapper.GenericError -> signUpServerErrorLiveData.value = Event(true)
+            }
         }
     }
 
@@ -87,7 +98,9 @@ class AuthViewModel : ViewModel() {
             school != null &&
             group != null &&
             email != null &&
-            password != null
+            email?.isNotEmpty()!!&&
+            password != null &&
+            password?.isNotEmpty()!!
         ) {
             viewModelScope.launch {
                 val response = repository.signUp(
@@ -98,10 +111,10 @@ class AuthViewModel : ViewModel() {
                     email!!,
                     password!!
                 )
-                handleResponse(response)
+                handleResponse(response, signUpNetworkErrorLiveData, signUpServerErrorLiveData)
             }
         } else {
-            notFilledFieldsLiveData.value = Event(true)
+            signUpNotFilledFieldsLiveData.value = Event(true)
         }
     }
 
@@ -109,10 +122,10 @@ class AuthViewModel : ViewModel() {
         if (email != null && email?.isNotEmpty()!! && password != null && password?.isNotEmpty()!!) {
             viewModelScope.launch {
                 val response = repository.signIn(email!!, password!!)
-                handleResponse(response)
+                handleResponse(response, signInNetworkErrorLiveData,signInServerErrorLiveData)
             }
         } else {
-            notFilledFieldsLiveData.value = Event(true)
+            signInNotFilledFieldsLiveData.value = Event(true)
         }
     }
 
@@ -122,15 +135,15 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    private fun handleResponse(response: ResultWrapper<String>) {
+    private fun handleResponse(response: ResultWrapper<String>, networkLiveData:MutableLiveData<Event<Boolean>>, serverLiveData:MutableLiveData<Event<Boolean>>) {
         when (response) {
             is ResultWrapper.NetworkError -> {
-                networkErrorLiveData.value = Event(true)
+                PreferencesManager.userToken = "error"
+                networkLiveData.value = Event(true)
             }
             is ResultWrapper.Success -> {
                 PreferencesManager.userToken = response.value
                 PreferencesManager.email = email ?: ""
-//                PreferencesManager.deviceToken =  FirebaseMessaging.getInstance().token.result
                 FirebaseMessaging.getInstance().token.addOnCompleteListener {
                     if (it.isSuccessful) {
                         PreferencesManager.deviceToken = it.result
@@ -140,11 +153,13 @@ class AuthViewModel : ViewModel() {
                 if (PreferencesManager.deviceToken!!.isNotEmpty()) {
                     pushToken(PreferencesManager.deviceToken!!)
                 }
-
             }
-            is ResultWrapper.GenericError -> serverErrorLiveData.value = Event(true)
+            is ResultWrapper.GenericError -> {
+                PreferencesManager.userToken = "error"
+                serverLiveData.value = Event(true)
+            }
         }
-        if (PreferencesManager.userToken.isNotEmpty()) {
+        if (PreferencesManager.userToken.isNotEmpty()&&PreferencesManager.userToken != "error") {
             openScheduleFragmentLiveData.value = Event(true)
         }
     }

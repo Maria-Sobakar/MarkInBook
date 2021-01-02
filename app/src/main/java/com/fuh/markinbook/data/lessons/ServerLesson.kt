@@ -10,7 +10,7 @@ data class ServerLesson(
     val discipline: Discipline,
     override val start: Long,
     val durationInMinutes: Int,
-    val homework: Homework?,
+    val homework: Homework,
     val mark: StudentMark?
 ) : Lesson {
     data class StudentMark(val value: Int)

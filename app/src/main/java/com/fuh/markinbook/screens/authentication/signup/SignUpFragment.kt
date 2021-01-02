@@ -65,7 +65,7 @@ class SignUpFragment : Fragment(R.layout.sign_up_fragment) {
                 }
             signUpProgressFrame.isVisible = false
         }
-        viewModel.networkErrorLiveData.observe(viewLifecycleOwner) {
+        viewModel.signUpNetworkErrorLiveData.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { error ->
                 if (error) {
                     val snackBar = Snackbar.make(
@@ -77,7 +77,7 @@ class SignUpFragment : Fragment(R.layout.sign_up_fragment) {
                 }
             }
         }
-        viewModel.serverErrorLiveData.observe(viewLifecycleOwner) {
+        viewModel.signUpServerErrorLiveData.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { error ->
                 if (error) {
                     val snackBar = Snackbar.make(
@@ -89,13 +89,27 @@ class SignUpFragment : Fragment(R.layout.sign_up_fragment) {
                 }
             }
         }
+        viewModel.signUpNotFilledFieldsLiveData.observe(viewLifecycleOwner){
+            it.getContentIfNotHandled()?.let{not->
+                if (not){
+                    val snackBar = Snackbar.make(
+                        signUpCoordinatorLayout,
+                        requireContext().getString(R.string.not_all_info),
+                        Snackbar.LENGTH_LONG
+                    )
+                    snackBar.show()
+                }
+            }
+        }
         signUpEmailTextInputEditText.doOnTextChanged { text, _, _, _ ->
             if (isEmailValid(text.toString())) {
                 viewModel.emailInputted(text.toString())
                 signUpEmailTextInputEditText.error =null
             } else {
-                signUpEmailTextInputEditText.error =
-                    requireContext().getText(R.string.invalid_email)
+                if (text.toString().isNotEmpty()){
+                    signUpEmailTextInputEditText.error =
+                        requireContext().getText(R.string.invalid_email)
+                }
             }
 
         }
