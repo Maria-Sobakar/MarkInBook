@@ -24,7 +24,7 @@ class ScheduleFragment : Fragment(R.layout.schedule_fragment) {
     private lateinit var prevWeekItem: MenuItem
     private lateinit var currentWeekItem: MenuItem
     private lateinit var nextWeekItem: MenuItem
-    private lateinit var profileItem: MenuItem
+    private var profileItem: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +34,13 @@ class ScheduleFragment : Fragment(R.layout.schedule_fragment) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.schedule_menu, menu)
-         profileItem = menu.findItem(R.id.profile)
+        profileItem = menu.findItem(R.id.profile)
         val logInItem = menu.findItem(R.id.log_in)
         prevWeekItem = menu.findItem(R.id.prev_week)
         currentWeekItem = menu.findItem(R.id.current_week)
         nextWeekItem = menu.findItem(R.id.next_week)
-        profileItem.isVisible = PreferencesManager.userToken.isNotEmpty()
+        profileItem?.isVisible = PreferencesManager.userToken.isNotEmpty()
+
         logInItem.isVisible = PreferencesManager.userToken.isEmpty()
     }
 
@@ -121,7 +122,6 @@ class ScheduleFragment : Fragment(R.layout.schedule_fragment) {
         viewModel.networkErrorLiveData.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { error ->
                 if (error) {
-                    profileItem.isVisible = false
                     if (PreferencesManager.userToken.isNotEmpty()) {
                         val snackBar = Snackbar.make(
                             scheduleCoordinatorLayout,
@@ -129,7 +129,9 @@ class ScheduleFragment : Fragment(R.layout.schedule_fragment) {
                             Snackbar.LENGTH_SHORT
                         )
                         snackBar.show()
+
                     }
+                    profileItem?.isVisible = false
                 }
             }
         }
