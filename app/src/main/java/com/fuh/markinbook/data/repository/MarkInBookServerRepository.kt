@@ -4,6 +4,7 @@ import com.fuh.markinbook.PreferencesManager
 import com.fuh.markinbook.api.ApiService
 import com.fuh.markinbook.api.ResultWrapper
 import com.fuh.markinbook.data.Day
+import com.fuh.markinbook.data.Group
 import com.fuh.markinbook.data.School
 import com.fuh.markinbook.data.lessons.ServerLesson
 import com.google.gson.GsonBuilder
@@ -96,44 +97,47 @@ class MarkInBookServerRepository(private val dispatcher: CoroutineDispatcher = D
         }
     }
 
-    suspend fun getGroups(id: Int) = service.getAllGroupFromSchool(id)
+    suspend fun getGroups(id: Int):ResultWrapper<List<Group>> {
+        return safeApiCall(dispatcher) {
+            service.getAllGroupFromSchool(id)
+        }
+    }
+        suspend fun getGroupById(schoolId: Int, groupId: Int) = service.getGroupById(schoolId, groupId)
 
-    suspend fun getGroupById(schoolId: Int, groupId: Int) = service.getGroupById(schoolId, groupId)
+        suspend fun getCurrentStudent() = service.getCurrentStudent()
 
-    suspend fun getCurrentStudent() = service.getCurrentStudent()
+        suspend fun addProfileImage(image: MultipartBody.Part) = service.addProfileImage(image)
 
-    suspend fun addProfileImage(image: MultipartBody.Part) = service.addProfileImage(image)
+        suspend fun getLesson(lessonId: Int) = service.getLesson(lessonId)
 
-    suspend fun getLesson(lessonId: Int) = service.getLesson(lessonId)
+        suspend fun pushToken(token:String) = service.pushToken(token)
 
-    suspend fun pushToken(token:String) = service.pushToken(token)
-
-    private suspend fun <T> safeApiCall(
-        dispatcher: CoroutineDispatcher,
-        apiCall: suspend () -> T
-    ): ResultWrapper<T> {
-        return withContext(dispatcher) {
-            try {
-                ResultWrapper.Success(apiCall())
-            } catch (exception: Exception) {
-                Timber.e(exception)
-                when (exception) {
-                    is IOException -> {
-                        ResultWrapper.NetworkError(exception)
-                    }
-                    is HttpException -> {
-                        ResultWrapper.GenericError(exception.code())
-                    }
-                    else -> {
-                        ResultWrapper.GenericError()
+        private suspend fun <T> safeApiCall(
+            dispatcher: CoroutineDispatcher,
+            apiCall: suspend () -> T
+        ): ResultWrapper<T> {
+            return withContext(dispatcher) {
+                try {
+                    ResultWrapper.Success(apiCall())
+                } catch (exception: Exception) {
+                    Timber.e(exception)
+                    when (exception) {
+                        is IOException -> {
+                            ResultWrapper.NetworkError(exception)
+                        }
+                        is HttpException -> {
+                            ResultWrapper.GenericError(exception.code())
+                        }
+                        else -> {
+                            ResultWrapper.GenericError()
+                        }
                     }
                 }
             }
         }
-    }
 
-    companion object {
+        companion object {
         const val BASE_URL = "http://0.0.0.0:8081/api/v1/"
         const val AUTH_TAG = "Auth_tag"
     }
-}
+    }

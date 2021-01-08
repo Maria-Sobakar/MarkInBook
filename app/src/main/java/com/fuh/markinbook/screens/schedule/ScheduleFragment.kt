@@ -16,9 +16,7 @@ import com.fuh.markinbook.PreferencesManager
 import com.fuh.markinbook.R
 import com.fuh.markinbook.data.lessons.ServerLessonItem
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.schedule_fragment.*
-import timber.log.Timber
 
 class ScheduleFragment : Fragment(R.layout.schedule_fragment) {
     private var adapter = ScheduleAdapter(mutableListOf(), null)
@@ -26,7 +24,7 @@ class ScheduleFragment : Fragment(R.layout.schedule_fragment) {
     private lateinit var prevWeekItem: MenuItem
     private lateinit var currentWeekItem: MenuItem
     private lateinit var nextWeekItem: MenuItem
-
+    private var profileItem: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +34,13 @@ class ScheduleFragment : Fragment(R.layout.schedule_fragment) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.schedule_menu, menu)
-        val profileItem = menu.findItem(R.id.profile)
+        profileItem = menu.findItem(R.id.profile)
         val logInItem = menu.findItem(R.id.log_in)
         prevWeekItem = menu.findItem(R.id.prev_week)
         currentWeekItem = menu.findItem(R.id.current_week)
         nextWeekItem = menu.findItem(R.id.next_week)
-        profileItem.isVisible = PreferencesManager.userToken.isNotEmpty()
+        profileItem?.isVisible = PreferencesManager.userToken.isNotEmpty()
+
         logInItem.isVisible = PreferencesManager.userToken.isEmpty()
     }
 
@@ -77,7 +76,7 @@ class ScheduleFragment : Fragment(R.layout.schedule_fragment) {
 
                 true
             }
-            R.id.log_in->{
+            R.id.log_in -> {
                 val navController =
                     Navigation.findNavController(requireActivity(), R.id.navigation_host_fragment)
                 navController.navigate(R.id.authorizationFragment)
@@ -92,8 +91,8 @@ class ScheduleFragment : Fragment(R.layout.schedule_fragment) {
         viewModel.getLessonsForWeek()
         scheduleProgressFrame.isVisible = true
 
-        val lessonId = arguments?.getString(KEY_LESSON_ID,"")?.toIntOrNull()
-        if (lessonId != null ) {
+        val lessonId = arguments?.getString(KEY_LESSON_ID, "")?.toIntOrNull()
+        if (lessonId != null) {
             viewModel.getLesson(lessonId)
         }
 
@@ -102,6 +101,7 @@ class ScheduleFragment : Fragment(R.layout.schedule_fragment) {
 
         scheduleRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         viewModel.lessonsLiveData.observe(viewLifecycleOwner) {
+            scheduleEmptyListFrame.isVisible = it.isEmpty()
             scheduleProgressFrame.isVisible = false
             adapter.itemList = it
             adapter.activity = requireActivity()
@@ -122,14 +122,16 @@ class ScheduleFragment : Fragment(R.layout.schedule_fragment) {
         viewModel.networkErrorLiveData.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { error ->
                 if (error) {
-                    if (PreferencesManager.userToken.isNotEmpty()){
+                    if (PreferencesManager.userToken.isNotEmpty()) {
                         val snackBar = Snackbar.make(
                             scheduleCoordinatorLayout,
-                            requireContext().getString(R.string.no_network_connection),
+                            requireContext().getString(R.string.no_network_connection_local_lessons),
                             Snackbar.LENGTH_SHORT
                         )
                         snackBar.show()
+
                     }
+                    profileItem?.isVisible = false
                 }
             }
         }

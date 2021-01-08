@@ -19,6 +19,7 @@ class UserViewModel : ViewModel() {
     val schoolLiveData = MutableLiveData<School>()
     val groupLiveData = MutableLiveData<Group>()
     val profileImageLiveData = MutableLiveData<String?>()
+    val loadingLiveData = MutableLiveData<Boolean>()
 
     init {
         getStudentInfo()
@@ -35,6 +36,7 @@ class UserViewModel : ViewModel() {
 
     private fun getStudentInfo() {
         viewModelScope.launch {
+            loadingLiveData.value = true
             val student = repository.getCurrentStudent()
             val imageUrl = student.profileImage
             if (imageUrl != null) {
@@ -43,6 +45,7 @@ class UserViewModel : ViewModel() {
             studentLiveData.value = student
             schoolLiveData.value = repository.getSchoolById(student.schoolId)
             groupLiveData.value = repository.getGroupById(student.schoolId, student.groupId)
+            loadingLiveData.value = false
         }
     }
 }

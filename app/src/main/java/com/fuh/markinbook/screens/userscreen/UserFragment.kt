@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -71,6 +72,9 @@ class UserFragment : Fragment(R.layout.user_fragment) {
 
         navController =
             Navigation.findNavController(requireActivity(), R.id.navigation_host_fragment)
+        viewModel.loadingLiveData.observe(viewLifecycleOwner){
+                userProgressFrame.isVisible = it
+        }
         viewModel.studentLiveData.observe(viewLifecycleOwner) {
             userFirstNameTextView.text = it.firstName
             userLastNameTextView.text = it.lastName
@@ -87,6 +91,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
                     .with(this)
                     .load(it)
                     .into(userPhotoImageView)
+
             }
         }
         userEmailTextView.text = PreferencesManager.email
@@ -153,6 +158,7 @@ class UserFragment : Fragment(R.layout.user_fragment) {
         val fos = FileOutputStream(file)
         bitmap.compress(Bitmap.CompressFormat.JPEG, 20, fos)
         fos.close()
+        view.setImageBitmap(bitmap)
     }
 
     @Throws(IOException::class)

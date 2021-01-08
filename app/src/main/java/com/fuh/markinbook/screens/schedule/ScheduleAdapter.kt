@@ -85,10 +85,10 @@ class ScheduleAdapter(
                     lessonTimeEnd.get(Calendar.HOUR_OF_DAY)
                 }:${lessonTimeEnd.getMinutes()}"
 
-            if (lesson.homework == null) {
+            if (lesson.homework.tasks.isEmpty()) {
                 homework.isEnabled = false
             }
-            val homeworkImage = if (lesson.homework == null) {
+            val homeworkImage = if (lesson.homework.tasks.isEmpty()) {
                 ContextCompat.getDrawable(context, R.drawable.ic_no_homework)
 
             } else {
@@ -123,8 +123,8 @@ class ScheduleAdapter(
                     lessonTimeEnd.get(Calendar.HOUR_OF_DAY)
                 }:${lessonTimeEnd.getMinutes()}"
 
-            if (lesson.homework.isEmpty()) {
-                homework.isClickable = false
+            if (lesson.homework.isBlank()) {
+                homework.isEnabled = false
             }
             val homeworkImage = if (lesson.homework.isEmpty()) {
                 ContextCompat.getDrawable(context, R.drawable.ic_no_homework)

@@ -26,6 +26,10 @@ class SignInFragment : Fragment(R.layout.sign_in_fragment) {
                 viewModel.emailInputted(text.toString())
                 signInEmailTextInputEditText.error = null
             } else {
+                if (text.toString().isNotEmpty()){
+                    signInEmailTextInputEditText.error =
+                        requireContext().getText(R.string.invalid_email)
+                }
                 signInEmailTextInputEditText.error =
                     requireContext().getText(R.string.invalid_email)
             }
@@ -42,7 +46,7 @@ class SignInFragment : Fragment(R.layout.sign_in_fragment) {
                 Navigation.findNavController(requireActivity(), R.id.navigation_host_fragment)
             navController.navigate(R.id.scheduleFragment)
         }
-        viewModel.networkErrorLiveData.observe(viewLifecycleOwner) {
+        viewModel.signInNetworkErrorLiveData.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { error ->
                 if (error) {
                     val snackBar = Snackbar.make(
@@ -54,7 +58,7 @@ class SignInFragment : Fragment(R.layout.sign_in_fragment) {
                 }
             }
         }
-        viewModel.serverErrorLiveData.observe(viewLifecycleOwner) {
+        viewModel.signInServerErrorLiveData.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { error ->
                 if (error) {
                     val snackBar = Snackbar.make(
@@ -66,7 +70,18 @@ class SignInFragment : Fragment(R.layout.sign_in_fragment) {
                 }
             }
         }
-
+        viewModel.signInNotFilledFieldsLiveData.observe(viewLifecycleOwner){
+            it.getContentIfNotHandled()?.let{not->
+                if (not){
+                    val snackBar = Snackbar.make(
+                        signInCoordinatorLayout,
+                        requireContext().getString(R.string.not_all_info),
+                        Snackbar.LENGTH_LONG
+                    )
+                    snackBar.show()
+                }
+            }
+        }
     }
 
     companion object {

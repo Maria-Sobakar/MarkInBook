@@ -13,7 +13,8 @@
     <string name="group">Клас</string>
 
     <string name="server_error">Помилка на сервері</string>
-    <string name="no_network_connection">Відсутнє інтернет з\'єднання, доступні лише локальні уроки</string>
+    <string name="no_network_connection_local_lessons">Відсутнє інтернет з\'єднання, доступні лише локальні уроки</string>
+    <string name="no_network_connection">Відсутнє інтернет з\'єднання.</string>
     <string name="not_all_fields_filled">Заповніть, будь ласка, всі поля!</string>
     <string name="invalid_email">Некоректна електронна адреса!</string>
     <string name="invalid_duration">Некоректне значення!</string>
@@ -36,6 +37,7 @@
     <string name="schedule_next_week">Розклад на наступний тиждень</string>
     <string name="next_week">Наступний тиждень</string>
     <string name="schedule">Розклад</string>
+    <string name="empty_schedule">Наразі розклад пустий</string>
 
     <string name="discipline_list">Список дисциплін</string>
     <string name="task_list">Список завдань</string>
