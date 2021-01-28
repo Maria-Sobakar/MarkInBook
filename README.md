@@ -32,7 +32,7 @@ Site: https://github.com/diagorus/markinbook-teacher
  
 ## Technologies
 
- - Single activity
+ - Single activity аpplication
  - View pager 2
  - Retrofit
  - Room
@@ -41,6 +41,7 @@ Site: https://github.com/diagorus/markinbook-teacher
  - LiveData
  - Navigation Component
  - Material date/time pickers
+ - Glide
  
  ## Architecture
  
